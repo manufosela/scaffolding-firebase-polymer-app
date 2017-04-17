@@ -1,0 +1,79 @@
+<script>
+    MYAPPBehavior = {
+
+      properties: {
+        showLog: {
+          type: Boolean,
+          value: true
+        }
+      },
+
+      created: function() {
+        console.log('MYAPPBehavior for ', this, 'enabled!');
+      },
+
+      log: function()  {
+        if (this.showLog) {
+          var msg = []; 
+          for(var k in arguments) { msg.push(arguments[k]); }
+          console.log(msg.join(' '));
+        }
+      },
+
+      closeLola: function() {
+        if (document.querySelector('util-lola')) {
+          document.querySelector('util-lola').active = false;
+        }
+      },
+
+      toggleSignIn: function () {
+        if (!firebase.auth().currentUser) {
+          var provider = new firebase.auth.GoogleAuthProvider();
+          provider.addScope('https://www.googleapis.com/auth/plus.login');
+          firebase.auth().signInWithPopup(provider).then(function(result) {
+            var token = result.credential.accessToken;
+            var user = result.user;
+          }.bind(this)).catch(function(error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            var email = error.email;
+            var credential = error.credential;
+            if (errorCode === 'auth/account-exists-with-different-credential') {
+              alert('You have already signed up with a different auth provider for that email.');
+            } else {
+              console.error(error);
+            }
+          });
+        } else {
+          firebase.auth().signOut();
+          this.initApp();
+        }
+        Polymer.dom(this.root).querySelector('#quickstart-sign-in').disabled = true;
+      },
+
+      initApp: function() {
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            this.user = user;
+            var displayName = user.displayName;
+            var email = user.email;
+            var emailVerified = user.emailVerified;
+            var photoURL = user.photoURL;
+            var isAnonymous = user.isAnonymous;
+            var uid = user.uid;
+            var providerData = user.providerData;
+            Polymer.dom(this.root).querySelector('.user-details-container').textContent = email;
+            Polymer.dom(this.root).querySelector('#quickstart-sign-in').textContent = 'Sign out';
+            Polymer.dom(this.root).querySelector('#message').innerHTML = '';
+            this._getDateOrder();
+          } else {
+            Polymer.dom(this.root).querySelector('.user-details-container').textContent = '';
+            Polymer.dom(this.root).querySelector('#quickstart-sign-in').textContent = 'Sign in with Google';
+            this.closeLola();
+          }
+          Polymer.dom(this.root).querySelector('#quickstart-sign-in').disabled = false;
+        }.bind(this));
+      }
+
+    };
+</script>

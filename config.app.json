@@ -1,0 +1,39 @@
+{
+    "title": "MY APP",
+    "author": "@manufosela",
+    "sectionsTitle": [
+        "SECCION 1", 
+        "SECCION 2",
+        "SECCION 3",
+        "SECCION 4",
+        "SECCION 5",
+        "SECCION 6"
+    ],
+    "sectionsName": [
+        "SECCION1", 
+        "SECCION2",
+        "SECCION3",
+        "SECCION4",
+        "SECCION5",
+        "SECCION6"
+    ],
+    "sections":[
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six"
+    ],
+    "class": "MiAplicacion",
+    "className": "mi-aplicacion",
+    "sectionClass":[
+        "SectionOne",
+        "SectionTwo",
+        "SectionThree",
+        "SectionFour",
+        "SectionFive",
+        "SectionSix"
+    ],
+    "prefix": "section-"
+}
